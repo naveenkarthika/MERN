@@ -81,7 +81,10 @@ router.put("/update",async(req,res) => {
         address:req.body.address,
         email:req.body.email
     }})
-    res.json(update);
+    res.json({
+        message : "User record updated" 
+    });
+
 });
 
 router.delete("/delete/:id",async (req,res) => {

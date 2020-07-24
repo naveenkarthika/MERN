@@ -2,21 +2,35 @@ import React, { Component } from 'react';
 import Register from './Auth/Register';
 import Info from './Auth/Info';
 import axios from 'axios';
+import { ToastContainer,toast,Slide,Zoom, Flip, Bounce  } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default class App extends Component {
 
   state = {
     data: "",
-    editData:""
+    editData: ""
   }
 
   create = (data) => {
     console.log(data.isEdit)
     if (!data.isEdit) {
-      axios.post("http://localhost:5000/api/register", data).then(res => { this.getAll() })
+      axios.post("http://localhost:5000/api/register", data).then(res => {
+        console.log(res.status);
+        this.getAll();
+        toast.success(res.data.message)
+
+      })
     }
     else {
-      axios.put("http://localhost:5000/api/update", data).then(res => { this.getAll() })
+      axios.put("http://localhost:5000/api/update", data).then(res => {
+        console.log(res)
+        this.getAll()
+        toast.success(res.data.message,{
+          position: toast.POSITION.TOP_RIGHT,
+          className: 'foo-bar'
+        })
+      })
     }
 
   }
@@ -27,7 +41,6 @@ export default class App extends Component {
 
   getAll() {
     axios.get("http://localhost:5000/api/info").then(res => {
-      // console.log(res.data)
       this.setState({
         data: res.data
       })
@@ -42,6 +55,7 @@ export default class App extends Component {
       axios.delete(`http://localhost:5000/api/delete/${data._id}`).then(res => {
         console.log(res);
         this.getAll();
+        toast.success(res.data.message)
       })
     }
 
@@ -66,6 +80,7 @@ export default class App extends Component {
           <div className="col-6">
             <Info getData={this.state.data} setData={this.update} delData={this.del} />
           </div>
+          <ToastContainer transition={Bounce}/>
         </div>
       </div>
 

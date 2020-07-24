@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default class Register extends Component {
     state = {
@@ -24,21 +25,23 @@ export default class Register extends Component {
 
     infoSubmit = (event) => {
         if (!this.state.isEdit) {
-            
+            event.preventDefault();
             let data = {
-                isEdit:this.state.isEdit,
+                isEdit: this.state.isEdit,
                 name: this.state.name,
                 age: this.state.age,
                 address: this.state.address,
                 email: this.state.email,
                 password: this.state.password
             }
+
             this.props.myData(data);
         }
-        else{
+        else {
+            event.preventDefault();
             let data = {
-                isEdit:this.state.isEdit,
-                _id:this.state._id,
+                isEdit: this.state.isEdit,
+                _id: this.state._id,
                 name: this.state.name,
                 age: this.state.age,
                 address: this.state.address,
@@ -63,7 +66,16 @@ export default class Register extends Component {
         }
     }
 
-
+    reset = () => {
+        console.log("reset")
+        this.setState({
+            name: "",
+            age: "",
+            address: "",
+            email: "",
+            password: "",
+        })
+    }
 
     render() {
         return (
@@ -90,6 +102,7 @@ export default class Register extends Component {
                         <input type="text" className="form-control" name="password" onChange={this.infoChanged} value={this.state.password} />
                     </div>
                     <button type="submit" className="btn btn-primary">{this.state.isEdit ? 'Update' : 'Create'}</button>
+                    <button type="button" className="btn btn-primary float-right" onClick={this.reset}>Reset</button>
                 </form>
             </div>
         )
